@@ -3,4 +3,5 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 
 # timeline
 
-2020/06/02: Start
+- 2020/06/02: Start
+- 2020/06/03: Token
