@@ -7,6 +7,7 @@ type Token struct {
     Literal string
 }
 
+// トークンと文字列の対応表
 const (
     ILLEGAL = "ILLEGAL"
     EOF     = "EOF"
@@ -34,8 +35,8 @@ const (
 )
 
 var keywords = map[string]TokenType{
-    "fn": FUNCTION
-    "let": LET
+    "fn": FUNCTION,
+    "let": LET,
 }
 
 func LookupIdent(ident string) TokenType {

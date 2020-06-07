@@ -7,6 +7,7 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
+	//テスト対象の文字列
 	input := `let five = 5;
 	let ten = 10;
 	let add = fn(x, y) {
@@ -15,6 +16,7 @@ func TestNextToken(t *testing.T) {
 	lt result = add(five, ten);
 	`
 
+	// 期待する出力結果
 	tests := []struct {
 		expectedType token.TokenType
 		expectedLiteral string
@@ -58,13 +60,18 @@ func TestNextToken(t *testing.T) {
 		{token.EOF, ""},
 	}
 
+	// Lexerの初期化 テスト対象の文字列を与えている
 	l := New(input)
+	// 期待する出力配列の要素数分ループ
 	for i, tt := range tests {
+		// lexerから次のトークンを取得
 		tok := l.NextToken()
 
+		// トークンのタイプが合っているかの判定
 		if tok.Type != tt.expectedType {
 			t.Fatalf("tests[%d] - tokentype wrong. expected=%q, got=%q", i, tt.expectedType, tok.Type)
 		}
+		// トークンのリテラルがあっているかの判定
 		if tok.Literal != tt.expectedLiteral {
 			t.Fatalf("tests[%d] - literal wrong. expected=%q, got=%q", i, tt.expectedLiteral, tok.Literal)
 		}
