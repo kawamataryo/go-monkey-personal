@@ -20,7 +20,7 @@ func New(input string) *Lexer {
 	return l
 }
 
-// 次の1文字を読んで、inputの文字列の現在位置を1文字進める
+// 次の1文字を読んでchに格納して、inputの文字列の現在位置を1文字進める関数
 func (l *Lexer) readChar() {
 	if l.readPosition >= len(l.input) {
     // 入力値の最終文字まで来たらchに0を設定する
@@ -35,8 +35,11 @@ func (l *Lexer) readChar() {
 	l.readPosition++
 }
 
+// chを読んで対応するtokを返す
 func (l *Lexer) NextToken() token.Token {
     var tok token.Token
+
+    l.skipWhitespace()
 
     switch l.ch {
     case '=':
@@ -61,7 +64,11 @@ func (l *Lexer) NextToken() token.Token {
     default:
         if isLetter(l.ch) {
             tok.Literal = l.readIdentifier()
-            to.Type = token.LookupIdent(tok.Literal)
+            tok.Type = token.LookupIdent(tok.Literal)
+            return tok
+        } else if isDigit(l.ch) {
+            tok.Type = token.INT
+            tok.Literal = l.readNumber()
             return tok
         } else {
             tok = newToken(token.ILLEGAL, l.ch)
@@ -72,10 +79,29 @@ func (l *Lexer) NextToken() token.Token {
     return tok
 }
 
+func (l *Lexer) readNumber() string  {
+	position := l.position
+	for isDigit(l.ch) {
+		l.readChar()
+	}
+	return l.input[position:l.position]
+}
+
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
+}
+
+func (l *Lexer) skipWhitespace() {
+    for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+        l.readChar()
+    }
+}
+
 func newToken(tokenType token.TokenType, ch byte) token.Token {
     return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
+// 認識された識別子以外の文字列リテラルをまとめて読み取る
 func (l * Lexer) readIdentifier() string {
     position := l.position
     for isLetter(l.ch) {
