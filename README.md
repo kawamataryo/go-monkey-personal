@@ -9,3 +9,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/07: Lexer
 - 2020/06/10: fix GOENV & GOROOT
 - 2020/06/11: Add token test
+- 2020/06/12: P16 Add token
