@@ -13,7 +13,11 @@ func TestLookupIdent(t *testing.T) {
 	}{
 		{ "let", args{ "let" }, LET},
 		{ "fun", args{ "fn" }, FUNCTION},
-		{ "other", args{ "funnn " }, IDENT},
+		{ "true", args{ "true" }, TRUE},
+		{ "false", args{ "false" }, FALSE},
+		{ "if", args{ "if" }, IF},
+		{ "else", args{ "else" }, ELSE},
+		{ "return", args{ "return" }, RETURN},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
