@@ -16,3 +16,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/13: P17 Add token
 - 2020/06/14: Create repl & finish chapter one 🎉
 - 2020/06/15: Start AST
+- 2020/06/15: Start parser test
