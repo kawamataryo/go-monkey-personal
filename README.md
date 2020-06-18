@@ -18,3 +18,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/15: Start AST
 - 2020/06/15: Start parser test
 - 2020/06/18: Parser let statements
+- 2020/06/18: Parser reading book
