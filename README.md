@@ -1,7 +1,7 @@
 # Go Monkey
 This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books/9784873118222/)".
-  
-    
+
+
 <img width="500" alt="スクリーンショット 2020-06-13 13 22 57" src="https://user-images.githubusercontent.com/11070996/84559830-1567e580-ad79-11ea-9b9f-61649d80a2e7.png">
 
 # Timeline
@@ -17,5 +17,6 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/14: Create repl & finish chapter one 🎉
 - 2020/06/15: Start AST
 - 2020/06/15: Start parser test
-- 2020/06/18: Parser let statements
-- 2020/06/18: Parser reading book
+- 2020/06/18: Parser. let statements
+- 2020/06/18: Parser. Reading book
+- 2020/06/19: Parser. Reading code and add comment.
