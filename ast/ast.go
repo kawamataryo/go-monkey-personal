@@ -4,25 +4,21 @@ import "github.com/kawamataryo/go-monkey/token"
 
 // 全てのノードが実装する
 type Node interface {
-	// トークンのリテラル値を返す。123とか、{}とか文字列
-	// デバックとテストのために用いる
-	TokenLiteral() string
+	TokenLiteral() string // デバックとテストのために用いる
 }
 
 // 一部のノードが実装する
-// Statement = 文？
+// Statement = 文。
 type Statement interface {
 	Node
-	// ダミーメソッド？
-	statementNode()
+	statementNode() // ダミーメソッド？
 }
 
 // 一部のノードが実装する
-// Expression = 表現？式？
+// Expression = 式。値を生成するもの
 type Expression interface {
 	Node
-	// ダミーメソッド？
-	expressionNode()
+	expressionNode() // ダミーメソッド？
 }
 
 // 最初のノード
@@ -43,7 +39,7 @@ func (p *Program) TokenLiteral() string {
 // Letを表すASTのノードの実装
 type LetStatement struct {
 	// 軸解析で得たトークン （typeとliteralを持つ）
-	Token token.Token
+	Token token.Token // token.LET
 	// 束縛する変数名
 	Name  *Identifier
 	// 束縛される式
