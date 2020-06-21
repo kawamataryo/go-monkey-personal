@@ -38,7 +38,7 @@ func (p *Program) TokenLiteral() string {
 
 // Letを表すASTのノードの実装
 type LetStatement struct {
-	// 軸解析で得たトークン （typeとliteralを持つ）
+	// 字句解析で得たトークン （typeとliteralを持つ）
 	Token token.Token // token.LET
 	// 束縛する変数名
 	Name  *Identifier

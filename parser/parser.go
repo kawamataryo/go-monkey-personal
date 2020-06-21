@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/kawamataryo/go-monkey/ast"
 	"github.com/kawamataryo/go-monkey/lexer"
 	"github.com/kawamataryo/go-monkey/token"
@@ -10,15 +11,29 @@ type Parser struct {
 	l *lexer.Lexer // 字句解析器インスタンスへのポインタ
 	curToken token.Token // 現在のトークン
 	peekToken token.Token // 次のトークン
+	errors []string // Error
 }
 
 func New(l *lexer.Lexer) *Parser  {
-	p := &Parser{l: l}
+	p := &Parser{
+		l: l,
+		errors: []string{},
+	}
 
 	p.nextToken()
 	p.nextToken()
 
 	return p
+}
+
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+// errorメッセージを代入する
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s insted", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
 
 // トークンを読み進める
@@ -31,7 +46,7 @@ func (p *Parser) ParserProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
 
-	for p.curToken.Type != token.EOF {
+	for !p.curTokenIs(token.EOF) {
 		// パースの実行
 		stmt := p.parseStatement()
 
@@ -60,12 +75,15 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	// letのASTの雛形を作る
 	stmt := &ast.LetStatement{Token: p.curToken}
 
+	// 識別子が次にくることを期待する
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
 
+	// 識別子のASTを作り、LetStatementのNameに設定する（これが変数名）
 	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
+	// 次に符号（=）がくること期待する
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
 	}
@@ -78,10 +96,12 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	return stmt
 }
 
+// 今のトークンが何なのか判定
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
 
+// 次のトークンが何なのか判定
 func (p *Parser) peekTokenIs(t token.TokenType) bool {
 	return p.peekToken.Type == t
 }
@@ -93,6 +113,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
 }
