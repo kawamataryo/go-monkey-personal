@@ -83,6 +83,12 @@ https://hodalog.com/golang-standard-project-layout/
 
 構造体の参照渡しをする時は`&`で型からポインタを取り出して行う
 
+# Go動画メモ
+https://www.youtube.com/watch?v=kPXfMFJ0oIE
+
+- Cに近い
+- 仮想マシンはない
+- Goのエントリーポイントはmain()
 
 
 # 参考
