@@ -21,3 +21,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/18: Parser. Reading book
 - 2020/06/19: Parser. Reading code and add comment.
 - 2020/06/20: Parser. Reading code and add comment.
+- 2020/06/22: Parser. Add Error handling.
