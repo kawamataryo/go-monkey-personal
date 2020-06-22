@@ -1,13 +1,13 @@
 package parser
 
 import (
-	"testing"
 	"github.com/kawamataryo/go-monkey/ast"
 	"github.com/kawamataryo/go-monkey/lexer"
+	"testing"
 )
 
 func TestLetStatements(t *testing.T) {
-	input :=`
+	input := `
 		let x = 5;
 		let y = 10;
 		let foobar = 838383;
@@ -16,7 +16,7 @@ func TestLetStatements(t *testing.T) {
 	p := New(l)
 
 	program := p.ParserProgram()
-	checkParserErrors(t,p)
+	checkParserErrors(t, p)
 
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
@@ -26,7 +26,7 @@ func TestLetStatements(t *testing.T) {
 	}
 	tests := []struct {
 		expectedIdentifier string
-	} {
+	}{
 		{"x"},
 		{"y"},
 		{"foobar"},
@@ -77,3 +77,32 @@ func checkParserErrors(t *testing.T, p *Parser) {
 	t.FailNow()
 }
 
+func TestReturnStatements(t *testing.T) {
+	input := `
+return 5;
+return 10;
+return 993322;
+`
+	l := lexer.New(input)
+	p := New(l)
+
+	program := p.ParserProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d",
+			len(program.Statements))
+	}
+
+	for _, stmt := range program.Statements {
+		returnStmt, ok := stmt.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("stmt not *ast.returnStatement. got=%T", stmt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Errorf("returnStmt.TokenLiteral not 'return', got %q",
+				returnStmt.TokenLiteral())
+		}
+	}
+}
