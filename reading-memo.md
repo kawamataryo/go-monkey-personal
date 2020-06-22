@@ -5,8 +5,15 @@
     - 型定義として使ってはいる。ただ、普通のTypeとの違いは何なんだろう
     - 型にはinterfaceとstructがある
     - interfaceは実態を作れないんだと思う
+    - 参考 http://cuto.unirita.co.jp/gostudy/post/interface/
+        - インタフェースの実装に明示的な宣言が必要なJavaやC#と違い、 Go言語ではインタフェースが必要とするメソッドをすべて実装した時点で、自動的にそのインタフェースを実装したとみなされます。
 - `stmt.(*ast.ReturnStatement)`の呼び出し形式
     - ポインタを呼び出す？？
+- `a, ok := someone.(Animal)`のやつ
+    - そのmethodがあるかどうかの判定ぽい？?
+    
+# メモ
+- Goではオブジェクト指向は出来ない。structで関数を追加していくだけ。
     
 # パーサー（構文解析機）
 入力をあるデータ構造へと変換するもの。JSON.parse()みたいなもの。
