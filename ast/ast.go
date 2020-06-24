@@ -1,10 +1,14 @@
 package ast
 
-import "github.com/kawamataryo/go-monkey/token"
+import (
+	"bytes"
+	"github.com/kawamataryo/go-monkey/token"
+)
 
 // 全てのノードが実装する
 type Node interface {
 	TokenLiteral() string // デバックとテストのために用いる
+	String() string
 }
 
 // 一部のノードが実装する
@@ -76,4 +80,23 @@ type ReturnStatement struct {
 func (rs *ReturnStatement) statementNode() {}
 func (rs *ReturnStatement) TokenLiteral() string {
 	return rs.Token.Literal
+}
+
+type ExpressionStatement struct {
+	Token token.Token // 式の最初のトークン
+	Expression Expression
+}
+
+func (es *ExpressionStatement) statementNode() {}
+func (es *ExpressionStatement) TokenLiteral() string  { return es.Token.Literal }
+
+
+// TODO: よくわからん
+func (p *Program) String() string {
+	var out bytes.Buffer
+
+	for _, s := range p.Statements {
+		out.WriteString(s.String())
+	}
+	return out.String()
 }
