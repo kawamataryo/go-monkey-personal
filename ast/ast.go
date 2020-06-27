@@ -91,7 +91,7 @@ func (es *ExpressionStatement) statementNode() {}
 func (es *ExpressionStatement) TokenLiteral() string  { return es.Token.Literal }
 
 
-// TODO: よくわからん
+// 再起的にASTを文字列に変換している
 func (p *Program) String() string {
 	var out bytes.Buffer
 
