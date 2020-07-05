@@ -24,3 +24,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/21: Parser. Add Error handling.
 - 2020/06/22: Parser. Add Return statement.
 - 2020/06/24: Parser. Expression.
+- 2020/07/06: Parser. Expression. Create String()

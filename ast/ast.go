@@ -47,7 +47,7 @@ type LetStatement struct {
 	// 束縛する変数名
 	Name  *Identifier
 	// 束縛される式
-	value Expression
+	Value Expression
 }
 
 // letステートメント構造体が持つダミーメソッド
@@ -58,7 +58,7 @@ func (ls *LetStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
-// 束縛の識別子を保持するためのもの。
+// 束縛の識別子を保持するためのもの
 // Expressionインターフェイスを実装する。
 // なぜなら、let以外の場所では、識別子は値を生成するから。（変数からの値の取り出しのように）
 type Identifier struct {
@@ -69,6 +69,9 @@ type Identifier struct {
 func (i *Identifier) expressionNode() {}
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
+}
+func (i *Identifier) String() string {
+	return i.Value
 }
 
 // Returnを表すASTのノードの実装
@@ -84,7 +87,7 @@ func (rs *ReturnStatement) TokenLiteral() string {
 
 type ExpressionStatement struct {
 	Token token.Token // 式の最初のトークン
-	Expression Expression
+	Expression Expression // 式を保持する
 }
 
 func (es *ExpressionStatement) statementNode() {}
@@ -99,4 +102,41 @@ func (p *Program) String() string {
 		out.WriteString(s.String())
 	}
 	return out.String()
+}
+
+func (ls *LetStatement)  String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ls.TokenLiteral() + " ")
+	out.WriteString(ls.Name.String())
+	out.WriteString(" = ")
+
+	if ls.Value != nil {
+		out.WriteString(ls.Value.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
+}
+
+func (rs *ReturnStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(rs.TokenLiteral() + " ")
+
+	if rs.ReturnValue != nil {
+		out.WriteString(rs.ReturnValue.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
+}
+
+func (es *ExpressionStatement) String() string {
+	if es.Expression != nil {
+		return es.Expression.String()
+	}
+	return ""
 }
