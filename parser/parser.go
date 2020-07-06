@@ -7,11 +7,33 @@ import (
 	"github.com/kawamataryo/go-monkey/token"
 )
 
+// 式の優先順位の定数。LOWESTから1, 2, 3と順次割り当てられている
+const (
+	_ int = iota
+	LOWEST
+	EQUALS // ==
+	LESSGREATER // > または <
+	SUM // +
+	PRODUCT // *
+	PREFIX // -X または !X
+	CALL // myFunction(X)
+)
+
+// 前置構文解析関数
+// 中置構文解析関数
+type (
+	prefixParseFn func() ast.Expression
+	infixParseFn func(ast.Expression)  ast.Expression
+)
+
 type Parser struct {
 	l *lexer.Lexer // 字句解析器インスタンスへのポインタ
 	curToken token.Token // 現在のトークン
 	peekToken token.Token // 次のトークン
 	errors []string // Error
+
+	prefixParseFns map[token.TokenType]prefixParseFn // 前置構文解析関数のmap
+	infixParseFns map[token.TokenType]infixParseFn // 中置構文解析関数のmap
 }
 
 func New(l *lexer.Lexer) *Parser  {
@@ -20,10 +42,17 @@ func New(l *lexer.Lexer) *Parser  {
 		errors: []string{},
 	}
 
+	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
+
 	p.nextToken()
 	p.nextToken()
 
 	return p
+}
+
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
 
 func (p *Parser) Errors() []string {
@@ -69,7 +98,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
-		return nil
+		return p.parseExpressionsStatement()
 	}
 }
 
@@ -120,6 +149,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	}
 }
 
+// returnのパーサー
 func (p *Parser) parseReturnStatement() ast.Statement {
 	stmt := &ast.ReturnStatement{
 		Token: p.curToken,
@@ -133,4 +163,36 @@ func (p *Parser) parseReturnStatement() ast.Statement {
 	}
 
 	return stmt
+}
+
+// 構文解析関数の記録
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn)  {
+	p.prefixParseFns[tokenType] = fn
+}
+func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn)  {
+	p.infixParseFns[tokenType] = fn
+}
+
+// 式文の構文解析
+
+func (p *Parser) parseExpressionsStatement() *ast.ExpressionStatement  {
+	stmt := &ast.ExpressionStatement{Token: p.curToken}
+
+	stmt.Expression = p.parseExpression(LOWEST)
+
+	if p.peekTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseExpression(precedence int) ast.Expression {
+	prefix := p.prefixParseFns[p.curToken.Type]
+	if prefix == nil {
+		return nil
+	}
+	leftExp := prefix()
+
+	return leftExp
 }
