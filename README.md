@@ -26,3 +26,4 @@ This repo is for "[Writing An Interpreter in Go](https://www.oreilly.co.jp/books
 - 2020/06/24: Parser. Expression.
 - 2020/07/06: Parser. Expression. Create String()
 - 2020/07/07: Parser. Parse identifier.
+- 2020/07/08: Reading [スターティングGo言語](https://www.amazon.co.jp/%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0Go%E8%A8%80%E8%AA%9E-%E6%9D%BE%E5%B0%BE%E6%84%9B%E8%B3%80-ebook/dp/B01FH3KRTI/ref=tmm_kin_swatch_0?_encoding=UTF8&qid=&sr=)
